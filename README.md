@@ -14,90 +14,22 @@
   "Board Game": ["Fran", "Harriet", "Lily", "Henry"]
 }
 ```
+## Points to Consider with TDD
+1. Start with a minimal, testable aspect of the problem. For example:
+- Does the function correctly parse the JSON input?
+- Can the function map one gift to one person?
+- Does it handle multiple people receiving the same gift?
 
-## Java
-```java
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.util.Map;
-import java.util.List;
+2. Implement Just Enough Code to Pass the Test
+Write the simplest implementation that passes the test.
 
-public class DeserializeJsonFromFile {
-    public static void main(String[] args) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        File jsonFile = new File("path/to/your/file.json");
-        Map<String, List<String>> data = mapper.readValue(jsonFile, Map.class);
+3. Refactor
+After passing the test, clean up your code to ensure it's readable and efficient.
+Refactor without changing functionality to improve clarity or performance. Ideally, use the rule of 3 as a guide. If the same block of code shows repetition, it's time to refactor.
+Refactor when you're in a Green state and comitted, giving you the ability to rollback changes 
 
-        System.out.println(data);
-    }
-}
-```
-
-
-## C#
-```C#
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-
-public class DeserializeJsonFromFile
-{
-    public static void Main()
-    {
-        string jsonFilePath = "path/to/your/file.json";
-        string json = File.ReadAllText(jsonFilePath);
-        var data = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
-
-        foreach (var item in data)
-        {
-            Console.WriteLine($"{item.Key}: {string.Join(", ", item.Value)}");
-        }
-    }
-}
-```
-
-
-## Python
-```python
-import json
-
-with open("path/to/your/file.json", "r") as file:
-    data = json.load(file)
-
-print(data)
-
-
-##Javascript
-const fs = require('fs');
-
-fs.readFile('path/to/your/file.json', 'utf8', (err, jsonString) => {
-    if (err) {
-        console.log("Error reading file:", err);
-        return;
-    }
-    try {
-        const data = JSON.parse(jsonString);
-        console.log(data);
-    } catch (err) {
-        console.log("Error parsing JSON:", err);
-    }
-});
-```
-
-
-## Rust
-```rust
-use serde_json::Value;
-use std::fs;
-
-fn main() {
-    let json_file_path = "path/to/your/file.json";
-    let json_data = fs::read_to_string(json_file_path).expect("Unable to read file");
-    let data: Value = serde_json::from_str(&json_data).expect("Unable to parse JSON");
-
-    println!("{:?}", data);
-}
-```
-
-
+4. Write the Next Test
+Incrementally add more complex cases:
+Case 1: Multiple gifts for one person.
+Case 2: Multiple people sharing the same gift.
+Case 3: Edge cases like an empty JSON or missing data.
